@@ -8,6 +8,8 @@ import ch.epfl.cs107.utils.Bit;
 import ch.epfl.cs107.utils.Image;
 import ch.epfl.cs107.utils.Text;
 
+import static ch.epfl.cs107.Helper.show;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -50,25 +52,25 @@ public final class Main {
      */
     public static void main(String[] args) {
         // ========== Test Bit ==========
-        //assert testXthBit();
-        //assert testGetLSB();
-        //assert testEmbedInXthBit();
-        //assert testEmbedInLSB();
-        //assert testByteConversion();
+        assert testXthBit();
+        assert testGetLSB();
+        assert testEmbedInXthBit();
+        assert testEmbedInLSB();
+        assert testByteConversion();
         // ========== Test Text ==========
-        //assert testToBitArray();
+        assert testToBitArray();
         Helper.dialog("Tests", "Bit and Text manipulation passed");
         // ========== Test Image ==========
-        //assert testConversionARGBInt();
-        //assert testPixelToGray();
-        //assert testGrayToBinary();
-        //assert testImageToGray();
-        //assert testGrayImageToBinary();
-        //assert testImageFromGray();
-        //assert testImageFromBinary();
+        assert testConversionARGBInt();
+        assert testPixelToGray();
+        assert testGrayToBinary();
+        assert testImageToGray();
+        assert testGrayImageToBinary();
+        assert testImageFromGray();
+        assert testImageFromBinary();
         Helper.dialog("Tests ", "Image manipulation passed");
-        //assert testWithRealImage("image-formats");
-        //assert testBinaryWithRealImage("image-formats");
+        assert testWithRealImage("image-formats");
+        assert testBinaryWithRealImage("image-formats");
         Helper.dialog("Tests ", "Image manipulation with images from 'image-formats' passed");
         // ========== Test Cryptography Methods ==========
         String message = "La vie est un long fleuve tranquille :-)";
@@ -78,9 +80,22 @@ public final class Main {
         //testCrypto(message, key);
         Helper.dialog("Tests ", "Cryptography passed");
         // ========== Test Steganography Methods ==========
-        //assert testEmbedBWImage();
+        assert testEmbedBWImage();
         //assert testEmbedText();
-        //assert testImageSteganographyWithImages("the-starry-night");
+                var image  = Helper.readImage("the-starry-night" + File.separator + "image.png");
+        var cover  = Helper.readImage("the-starry-night" + File.separator + "cover.png");
+        var hidden = Helper.readImage("the-starry-night" + File.separator + "hidden.png");
+        boolean[][] hidden_bw = Image.toBinary(image, IMAGE_THRESHOLD);
+        int[][] bw = Image.fromGray(Image.fromBinary(hidden_bw));
+        show(bw, "Hidden");
+
+        int[][] processed = ImageSteganography.embedARGB(cover, image, IMAGE_THRESHOLD);
+        show(processed, "Example");
+        boolean[][] raw = ImageSteganography.revealBW(processed);
+
+        int[][] bandw = Image.fromGray(Image.fromBinary(raw));
+        show(bandw, "Raw");
+        testImageSteganographyWithImages("the-starry-night");
         //assert testRevealBitArray();
         Helper.dialog("Tests ", "ImageSteganography passed");
     }
@@ -349,6 +364,7 @@ public final class Main {
         var image  = Helper.readImage(path + File.separator + "image.png");
         var cover  = Helper.readImage(path + File.separator + "cover.png");
         var hidden = Helper.readImage(path + File.separator + "hidden.png");
+        show(ImageSteganography.embedARGB(cover, image, IMAGE_THRESHOLD), "Example");
         return Arrays.deepEquals(ImageSteganography.embedARGB(cover, image, IMAGE_THRESHOLD), hidden);
     }
 

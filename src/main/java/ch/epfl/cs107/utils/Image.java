@@ -165,8 +165,8 @@ public final class Image {
         int[][] colorIm = new int[w][h];
         for (int i = 0; i < w; ++i) {
             for (int j = 0; j < h; ++j) {
-
-                colorIm[i][j] = 255 >> 24 | image[i][j] >> 16 | image[i][j] >> 8 | image[i][j];
+                byte grayValue = (byte)image[i][j];
+                colorIm[i][j] = argb((byte)255, grayValue, grayValue, grayValue);
             }
         }
         return colorIm;
@@ -186,15 +186,18 @@ public final class Image {
         int w = image.length;
         int h = image[0].length;
         int[][] colorIm = new int[w][h];
+        int trues = 0;
         for (int i = 0; i < w; ++i) {
             for (int j = 0; j < h; ++j) {
                 if (image[i][j]) {
-                    colorIm[i][j] = 255 >> 24 | 255 >> 16 | 255 >> 8 | 255;
+                    ++trues;
+                    colorIm[i][j] = 255;
                 } else {
-                    colorIm[i][j] = 255 >> 24;
+                    colorIm[i][j] = 0;
                 }
             }
         }
+        System.out.println("Trues: " + trues);
         return colorIm;
     }
 
