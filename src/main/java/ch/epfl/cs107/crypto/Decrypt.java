@@ -23,6 +23,7 @@ public final class Decrypt {
     // DO NOT CHANGE THIS, MORE ON THAT ON WEEK 7
     private Decrypt(){}
 
+
     // ============================================================================================
     // ================================== CAESAR'S ENCRYPTION =====================================
     // ============================================================================================
@@ -78,16 +79,15 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] cbc(byte[] cipher, byte[] iv) {
-        byte[] plainText = new byte[cipher.length] ;
-        byte[] currentPad = iv  ;
+        assert cipher != null ;
+        assert iv != null ;
         int k = iv.length ;
-        for(int i  = 0 ; i < cipher.length ; ++i){
-            if(i>0 && i%k==0){
-                currentPad = getNextPad(cipher , i-k , i);
-            }
-            plainText[i] = (byte)(cipher[i] ^ currentPad[i%k]);
+        byte[] plainText = new byte[cipher.length] ;
+        for(int i =  0 ; i < cipher.length ; ++i){
+            if(i < k) plainText[i] = (byte) (cipher[i]^iv[i]) ;
+            else plainText[i] = (byte)(cipher[i]^cipher[i-k]) ;
         }
-        return plainText;
+        return plainText ;
     }
 
     // ============================================================================================

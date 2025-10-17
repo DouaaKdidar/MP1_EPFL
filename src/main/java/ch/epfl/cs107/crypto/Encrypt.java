@@ -68,13 +68,6 @@ public final class Encrypt {
     // =================================== CBC'S ENCRYPTION =======================================
     // ============================================================================================
 
-    protected static byte[] getNextPad(byte[] cipher , int start , int end){
-        byte[] pad = new byte[end-start] ;
-        for(int i = start ; i < end ; ++i){
-            pad[i-start] = cipher[i] ;
-        }
-        return pad ;
-    }
 
 
     /**
@@ -83,18 +76,19 @@ public final class Encrypt {
      * @param iv the pad of size BLOCKSIZE we use to start the chain encoding
      * @return an encoded byte array
      */
+
     public static byte[] cbc(byte[] plainText, byte[] iv) {
+        assert plainText != null ;
+        assert iv != null ;
         byte[] cipher = new byte[plainText.length] ;
-        byte[] currentPad = iv  ;
         int k = iv.length ;
         for(int i  = 0 ; i < plainText.length ; ++i){
-            if(i>0 && i%k==0){
-                currentPad = getNextPad(cipher , i-k , i);
-            }
-            cipher[i] = (byte)(plainText[i] ^ currentPad[i%k]);
+            if(i < k) cipher[i] = (byte) (plainText[i]^iv[i]) ;
+            else cipher[i]  =  (byte)(plainText[i]^cipher[i-k]) ;
         }
         return cipher ;
     }
+
 
     // ============================================================================================
     // =================================== XOR'S ENCRYPTION =======================================
@@ -107,6 +101,7 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] xor(byte[] plainText, byte key) {
+        assert plainText != null ;
         byte[] cipher = new byte[plainText.length] ;
         for(int i = 0 ; i < plainText.length ; ++i){
             cipher[i] = (byte)(plainText[i]^key) ;
@@ -142,7 +137,6 @@ public final class Encrypt {
      * @param pad Array containing the used pad after the execution
      * @param result Array containing the result after the execution
      */
-
 
     public static void oneTimePad(byte[] plainText, byte[] pad, byte[] result){
         pad =  generateRandomBytes(plainText.length) ;
