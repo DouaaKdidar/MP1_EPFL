@@ -46,7 +46,15 @@ public final class Text {
      * @return <b>UTF-8</b> representation of the string in the <b>bit array</b> format
      */
     public static boolean[] toBitArray(String str){
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] arr =  toBytes(str) ;
+        boolean[] bitArr = new boolean[8*arr.length] ;
+        for(int i = 0 ; i < arr.length ; ++i){
+            boolean[] biteArray = Bit.toBitArray(arr[i]) ;
+            for(int j = 0  ; j < 8 ; ++j){
+                bitArr[i*8+j] = biteArray[j] ;
+            }
+        }
+        return bitArr ;
     }
 
     /**
@@ -63,8 +71,29 @@ public final class Text {
      * @param bitArray <b>UTF-8</b> compatible bit array
      * @return <b>UTF-8 String</b> representation of the bit array
      */
+
+    private static boolean[] sliceArray(boolean[] arr , int start ,int end){
+        boolean[] slice = new boolean[end-start] ;
+        for(int i = start ; i < end ; ++i){
+            slice[i-start] = arr[i] ;
+        }
+        return slice ;
+    }
+
+    /**
+     * returns a copy of the array arr form index start(inclusive) to end (exclusive)
+     * @param bitArray
+     * @return
+     */
+
+
     public static String toString(boolean[] bitArray) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert bitArray == null ;
+        byte[] arr = new byte[bitArray.length / 8];
+        for(int i = 0 ; i < bitArray.length /8 ; ++i){
+            arr[i] = Bit.toByte(sliceArray(bitArray, i * 8, (i+1)*8));
+        }
+        return toString(arr);
     }
 
 }

@@ -129,7 +129,7 @@ public final class Bit {
      */
     public static byte toByte(boolean[] bitArray){
         assert bitArray == null;
-        assert bitArray.length == 8;
+        assert bitArray.length != 8;
         byte bt = 0;
         for (int i = 0; i < 8; ++i) {
             if (bitArray[7-i]) {
