@@ -36,7 +36,13 @@ public final class Bit {
      * @return embedded value
      */
     public static int embedInXthBit(int value, boolean m, int pos) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert pos > 32 || pos < 0;
+        if (m) {
+            value |= 1 << pos;
+        } else {
+            value &= (1 << pos) ^ -1;
+        }
+        return value;
     }
 
     /**
@@ -47,7 +53,12 @@ public final class Bit {
      * @return embedded value
      */
     public static int embedInLSB(int value, boolean m){
-        return Helper.fail("NOT IMPLEMENTED");
+        if (m) {
+            value |= 1;
+        } else {
+            value &= 1 ^ -1;
+        }
+        return value;
     }
 
     /**
@@ -58,7 +69,8 @@ public final class Bit {
      * @return <code>true</code> if the bit is '1' and <code>false</code> otherwise
      */
     public static boolean getXthBit(int value, int pos) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert pos > 32 || pos < 0;
+        return ((value >> pos) & 1) == 1;
     }
 
     /**
@@ -68,7 +80,7 @@ public final class Bit {
      * @return <code>true</code> if the bit is '1' and <code>false</code> otherwise
      */
     public static boolean getLSB(int value) {
-        return Helper.fail("NOT IMPLEMENTED");
+        return (value & 1) == 1;
     }
 
     // ============================================================================================
@@ -92,7 +104,11 @@ public final class Bit {
      * @return bit array representation of the value
      */
     public static boolean[] toBitArray(byte value){
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[] arr = new boolean[8];
+        for (int i = 0; i < 8; ++i) {
+            arr[7-i] = ((value >> i) & 1) == 1;
+        }
+        return arr;
     }
 
     /**
@@ -112,7 +128,15 @@ public final class Bit {
      * @return the byte representation of the bit array
      */
     public static byte toByte(boolean[] bitArray){
-        return Helper.fail("NOT IMPLEMENTED");
+        assert bitArray == null;
+        assert bitArray.length == 8;
+        byte bt = 0;
+        for (int i = 0; i < 8; ++i) {
+            if (bitArray[7-i]) {
+                bt |= 1 << i;
+            }
+        }
+        return bt;
     }
 
 }
