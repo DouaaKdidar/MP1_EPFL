@@ -145,7 +145,9 @@ public final class Encrypt {
 
 
     public static void oneTimePad(byte[] plainText, byte[] pad, byte[] result){
-        pad =  generateRandomBytes(plain)
+        pad =  generateRandomBytes(plainText.length) ;
+        result = oneTimePad(plainText , pad) ;
     }
+}
 
 
