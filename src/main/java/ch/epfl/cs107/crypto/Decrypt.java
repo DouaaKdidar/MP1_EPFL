@@ -83,7 +83,7 @@ public final class Decrypt {
         int k = iv.length ;
         for(int i  = 0 ; i < cipher.length ; ++i){
             if(i>0 && i%k==0){
-                currentPad = getNextPad(plainText , i-k , i);
+                currentPad = getNextPad(cipher , i-k , i);
             }
             plainText[i] = (byte)(cipher[i] ^ currentPad[i%k]);
         }
