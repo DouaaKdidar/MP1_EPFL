@@ -37,7 +37,8 @@ public final class Image {
      * @return packed value of the pixel
      */
     public static int argb(byte alpha, byte red, byte green, byte blue){
-        return Helper.fail("NOT IMPLEMENTED");
+
+        return alpha << 24 | red << 16 | green << 8 | blue ;
     }
 
     /**
@@ -47,7 +48,8 @@ public final class Image {
      * @return the alpha component of the pixel
      */
     public static byte alpha(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        return (byte)(pixel >> 24);
+        // return Helper.fail("NOT IMPLEMENTED");
     }
 
     /**
@@ -57,7 +59,7 @@ public final class Image {
      * @return the red component of the pixel
      */
     public static byte red(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        return (byte)(pixel >> 16);
     }
 
     /**
@@ -67,7 +69,7 @@ public final class Image {
      * @return the green component of the pixel
      */
     public static byte green(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        return (byte)(pixel >> 8);
     }
 
     /**
@@ -77,7 +79,7 @@ public final class Image {
      * @return the blue component of the pixel
      */
     public static byte blue(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        return (byte)pixel;
     }
 
     /**
@@ -87,7 +89,7 @@ public final class Image {
      * @return gray scaling of the given pixel
      */
     public static int gray(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        return ((int)(red(pixel) & 255) + (int)(blue(pixel) & 255) + (int)(green(pixel) & 255)) / 3;
     }
 
     /**
@@ -98,7 +100,7 @@ public final class Image {
      * @return binary representation of a pixel
      */
     public static boolean binary(int gray, int threshold){
-        return Helper.fail("NOT IMPLEMENTED");
+        return gray >= threshold;
     }
 
     // ============================================================================================
@@ -112,7 +114,18 @@ public final class Image {
      * @return the gray scale version of the image
      */
     public static int[][] toGray(int[][] image){
-        return Helper.fail("NOT IMPLEMENTED");
+        assert image == null;
+        assert image.length > 0;
+        assert image[0].length > 0;
+        int w = image.length;
+        int h = image[0].length;
+        int[][] grayIm = new int[w][h];
+        for (int i = 0; i < w; ++i) {
+            for (int j = 0; j < h; ++j) {
+                grayIm[i][j] = gray(image[i][j]);
+            }
+        }
+        return grayIm;
     }
 
     /**
@@ -123,7 +136,18 @@ public final class Image {
      * @return binary representation of the image
      */
     public static boolean[][] toBinary(int[][] image, int threshold){
-        return Helper.fail("NOT IMPLEMENTED");
+        assert image == null;
+        assert image.length > 0;
+        assert image[0].length > 0;
+        int w = image.length;
+        int h = image[0].length;
+        boolean[][] boolIm = new boolean[w][h];
+        for (int i = 0; i < w; ++i) {
+            for (int j = 0; j < h; ++j) {
+                boolIm[i][j] = binary(gray(image[i][j]), threshold);
+            }
+        }
+        return boolIm;
     }
 
     /**
@@ -133,7 +157,20 @@ public final class Image {
      * @return <b>gray ARGB</b> representation
      */
     public static int[][] fromGray(int[][] image){
-        return Helper.fail("NOT IMPLEMENTED");
+        assert image == null;
+        assert image.length > 0;
+        assert image[0].length > 0;
+        int w = image.length;
+        int h = image[0].length;
+        int[][] colorIm = new int[w][h];
+        for (int i = 0; i < w; ++i) {
+            for (int j = 0; j < h; ++j) {
+
+                colorIm[i][j] = 255 >> 24 | image[i][j] >> 16 | image[i][j] >> 8 | image[i][j];
+            }
+        }
+        return colorIm;
+
     }
 
     /**
@@ -143,7 +180,22 @@ public final class Image {
      * @return <b>black and white ARGB</b> representation
      */
     public static int[][] fromBinary(boolean[][] image){
-        return Helper.fail("NOT IMPLEMENTED");
+        assert image == null;
+        assert image.length > 0;
+        assert image[0].length > 0;
+        int w = image.length;
+        int h = image[0].length;
+        int[][] colorIm = new int[w][h];
+        for (int i = 0; i < w; ++i) {
+            for (int j = 0; j < h; ++j) {
+                if (image[i][j]) {
+                    colorIm[i][j] = 255 >> 24 | 255 >> 16 | 255 >> 8 | 255;
+                } else {
+                    colorIm[i][j] = 255 >> 24;
+                }
+            }
+        }
+        return colorIm;
     }
 
 }
