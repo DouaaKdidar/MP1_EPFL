@@ -35,7 +35,13 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] caesar(byte[] cipher, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert cipher != null ;
+        byte[] plainText = new byte[cipher.length] ;
+
+        for(int i = 0 ; i < cipher.length ; ++i){
+            plainText[i] = (byte)(plainText[i] - key) ;
+        }
+        return plainText ;
     }
 
     // ============================================================================================
@@ -49,7 +55,16 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] vigenere(byte[] cipher, byte[] keyword) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert cipher != null ;
+        assert keyword != null ;
+
+        int n = cipher.length ;
+        int k = keyword.length ;
+        byte[] plainText = new byte[n] ;
+        for(int i = 0; i < n; ++i){
+            plainText[i] = (byte) (cipher[i] - keyword[i%k]);
+        }
+        return cipher ;
     }
 
     // ============================================================================================
@@ -63,7 +78,16 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] cbc(byte[] cipher, byte[] iv) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] plainText = new byte[cipher.length] ;
+        byte[] currentPad = iv  ;
+        int k = iv.length ;
+        for(int i  = 0 ; i < cipher.length ; ++i){
+            if(i>0 && i%k==0){
+                currentPad = getNextPad(plainText , i-k , i);
+            }
+            plainText[i] = (byte)(cipher[i] ^ currentPad[i%k]);
+        }
+        return plainText;
     }
 
     // ============================================================================================
@@ -77,7 +101,11 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] xor(byte[] cipher, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] plainText= new byte[cipher.length] ;
+        for(int i = 0 ; i < cipher.length ; ++i){
+            plainText[i] = (byte)(cipher[i]^key) ;
+        }
+        return plainText ;
     }
 
     // ============================================================================================
@@ -91,7 +119,14 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] oneTimePad(byte[] cipher, byte[] pad) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert cipher != null ;
+        assert pad != null ;
+        assert pad.length >= cipher.length ;
+        byte[] plainText = new byte[cipher.length] ;
+        for(int i = 0 ; i < cipher.length ; ++i){
+            plainText[i] = (byte) (cipher[i] ^ pad[i]) ;
+        }
+        return plainText;
     }
 
 }

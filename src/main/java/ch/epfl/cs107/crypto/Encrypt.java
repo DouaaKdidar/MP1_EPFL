@@ -2,14 +2,7 @@ package ch.epfl.cs107.crypto;
 
 import ch.epfl.cs107.Helper;
 
-import static ch.epfl.cs107.utils.Text.*;
-import static ch.epfl.cs107.utils.Image.*;
-import static ch.epfl.cs107.utils.Bit.*;
-import static ch.epfl.cs107.stegano.ImageSteganography.*;
-import static ch.epfl.cs107.stegano.TextSteganography.*;
-import static ch.epfl.cs107.crypto.Encrypt.*;
-import static ch.epfl.cs107.crypto.Decrypt.*;
-import static ch.epfl.cs107.Main.*;
+import static ch.epfl.cs107.Helper.generateRandomBytes;
 
 /**
  * <b>Task 2: </b>Utility class to encrypt a given plain text.
@@ -36,7 +29,13 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] caesar(byte[] plainText, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert plainText != null ;
+        byte[] cipher = new byte[plainText.length] ;
+
+        for(int i = 0 ; i < plainText.length ; ++i){
+            cipher[i] = (byte)(plainText[i] + key) ;
+        }
+        return cipher ;
     }
 
     // ============================================================================================
@@ -52,12 +51,31 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] vigenere(byte[] plainText, byte[] keyword) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert plainText != null ;
+        assert keyword != null ;
+
+        int n = plainText.length ;
+        int k = keyword.length ;
+        byte[] cipher = new byte[n] ;
+        for(int i = 0; i < n; ++i){
+            cipher[i] = (byte) (plainText[i] + keyword[i%k]);
+        }
+        return cipher ;
+
     }
 
     // ============================================================================================
     // =================================== CBC'S ENCRYPTION =======================================
     // ============================================================================================
+
+    protected static byte[] getNextPad(byte[] cipher , int start , int end){
+        byte[] pad = new byte[end-start] ;
+        for(int i = start ; i < end ; ++i){
+            pad[i-start] = cipher[i] ;
+        }
+        return pad ;
+    }
+
 
     /**
      * Method applying a basic chain block counter of XOR without encryption method.
@@ -66,7 +84,16 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] cbc(byte[] plainText, byte[] iv) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] cipher = new byte[plainText.length] ;
+        byte[] currentPad = iv  ;
+        int k = iv.length ;
+        for(int i  = 0 ; i < plainText.length ; ++i){
+            if(i>0 && i%k==0){
+                currentPad = getNextPad(cipher , i-k , i);
+            }
+            cipher[i] = (byte)(plainText[i] ^ currentPad[i%k]);
+        }
+        return cipher ;
     }
 
     // ============================================================================================
@@ -80,7 +107,11 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] xor(byte[] plainText, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] cipher = new byte[plainText.length] ;
+        for(int i = 0 ; i < plainText.length ; ++i){
+            cipher[i] = (byte)(plainText[i]^key) ;
+        }
+        return cipher ;
     }
 
     // ============================================================================================
@@ -95,7 +126,14 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] oneTimePad(byte[] plainText, byte[] pad) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert plainText != null ;
+        assert pad != null ;
+        assert pad.length >= plainText.length ;
+        byte[] cipher = new byte[plainText.length] ;
+        for(int i = 0 ; i < plainText.length ; ++i){
+            cipher[i] = (byte) (plainText[i] ^ pad[i]) ;
+        }
+        return cipher;
     }
 
     /**
@@ -104,8 +142,10 @@ public final class Encrypt {
      * @param pad Array containing the used pad after the execution
      * @param result Array containing the result after the execution
      */
-    public static void oneTimePad(byte[] plainText, byte[] pad, byte[] result) {
-        Helper.fail("NOT IMPLEMENTED");
+
+
+    public static void oneTimePad(byte[] plainText, byte[] pad, byte[] result){
+        pad =  generateRandomBytes(plain)
     }
 
-}
+
