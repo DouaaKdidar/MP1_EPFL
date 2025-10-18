@@ -42,19 +42,19 @@ public class Challenge {
         }
         return frequencies ;
     }
-    public static byte[] sortfrequencies(int[] frequencies){
-        String onder = "" ;
-        int maxIdx = 0 ;
-        int max = 0;
-        for(int i = 0 ; i < 26 ; ++i){
-            if(frequencies[i] > max ){
-                max = frequencies[i] ;
-                maxIdx = i ;
-            }
-        }
-        frequencies[maxIdx] = 0 ;
-
-    }
+//    public static byte[] sortfrequencies(int[] frequencies){
+//        String onder = "" ;
+//        int maxIdx = 0 ;
+//        int max = 0;
+//        for(int i = 0 ; i < 26 ; ++i){
+//            if(frequencies[i] > max ){
+//                max = frequencies[i] ;
+//                maxIdx = i ;
+//            }
+//        }
+//        frequencies[maxIdx] = 0 ;
+//
+//    }
     public static String challenge(){
         String frequencyOrder = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
         byte[] key = Text.toBytes(frequencyOrder) ;
