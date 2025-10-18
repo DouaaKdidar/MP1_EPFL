@@ -96,7 +96,7 @@ public final class Text {
         if (bitArray.length == 0) {
             return "";
         }
-        assert bitArray.length % 8 == 0 ;
+
 
         byte[] arr = new byte[bitArray.length / 8];
         for(int i = 0 ; i < bitArray.length /8 ; ++i){

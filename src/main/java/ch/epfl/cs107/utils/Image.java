@@ -99,6 +99,7 @@ public final class Image {
      * @return binary representation of a pixel
      */
     public static boolean binary(int gray, int threshold){
+        assert gray >=0 && gray <=255 ;
         return gray >= threshold;
     }
 
@@ -164,7 +165,10 @@ public final class Image {
      */
     public static int[][] fromGray(int[][] image){
         assert image != null;
-        assert image.length > 0;
+        if(image.length == 0 ) return image ;
+        for(int[] elem : image){
+            assert elem!=null ;
+        }
         assert image[0].length > 0;
         int w = image.length;
         int h = image[0].length;
