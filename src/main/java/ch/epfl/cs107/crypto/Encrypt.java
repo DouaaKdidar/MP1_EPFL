@@ -53,6 +53,8 @@ public final class Encrypt {
     public static byte[] vigenere(byte[] plainText, byte[] keyword) {
         assert plainText != null ;
         assert keyword != null ;
+        // assert cipher.length > 0;
+        assert keyword.length > 0;
 
         int n = plainText.length ;
         int k = keyword.length ;
@@ -80,6 +82,9 @@ public final class Encrypt {
     public static byte[] cbc(byte[] plainText, byte[] iv) {
         assert plainText != null ;
         assert iv != null ;
+        // assert cipher.length > 0;
+        assert iv.length > 0;
+
         byte[] cipher = new byte[plainText.length] ;
         int k = iv.length ;
         for(int i  = 0 ; i < plainText.length ; ++i){
@@ -123,7 +128,7 @@ public final class Encrypt {
     public static byte[] oneTimePad(byte[] plainText, byte[] pad) {
         assert plainText != null ;
         assert pad != null ;
-        assert pad.length >= plainText.length ;
+        assert pad.length == plainText.length ;
         byte[] cipher = new byte[plainText.length] ;
         for(int i = 0 ; i < plainText.length ; ++i){
             cipher[i] = (byte) (plainText[i] ^ pad[i]) ;
