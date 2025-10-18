@@ -28,14 +28,17 @@ public class TextSteganography {
 
     public static void main(String[] args){
         int[][] image ={
-                {1694089606, -1423994191},
-                {-404912417, 339861896}
+                { -865247919, -568503894 },
+                { 42841050, 1846756616 }
         };
 
-        byte[] message = {-55, -56} ;
-        byte[] text = revealText(image);
-        for(int i = 0 ; i < text.length ; ++i){
-            System.out.println(text[i]);
+        byte[] message = {-79, 105};
+        int[][] tst = embedText(image , message);
+        for(int i = 0 ; i < tst.length ; ++i){
+            for(int j = 0; j < tst[0].length ; ++j){
+                System.out.println(tst[i][j]);
+            }
+            System.out.println();
         }
     }
 
@@ -91,20 +94,20 @@ public class TextSteganography {
      */
     public static boolean[] revealBitArray(int[][] image) {
         assert image != null ;
-        assert image[0] != null ;
         int n = image.length ;
-        if(n ==0) {
+        if(n>0) assert image[0]!= null ;
+        if(n == 0) {
             boolean[] bitArray = new boolean[0];
             return bitArray ;
         }
         int m = image[0].length ;
-        for(int[] elem : image){
-            assert elem != null ;
-            assert elem.length == m  ;
-        }
         if(m ==0) {
             boolean[] bitArray = new boolean[0];
             return bitArray ;
+        }
+        for(int[] elem : image){
+            assert elem != null ;
+            assert elem.length == m  ;
         }
         boolean bitArray[] = new boolean[n*m] ;
         for(int i = 0; i  < n ; ++i){
@@ -127,6 +130,28 @@ public class TextSteganography {
      * @param message Embedded message
      * @return ARGB image with the message embedded
      */
+//    public static int[][] embedText(int[][] cover, byte[] message) {
+//        assert cover != null ;
+//        assert message != null ;
+//        assert cover[0] != null ;
+//        int length = cover[0].length;
+//        for(int[] elem : cover){
+//            assert elem != null ;
+//            assert elem.length == length ;
+//        }
+//        if(message.length == 0) return cover ;
+//        boolean[] bitArr = new boolean[8*message.length] ;
+//        for(int i = 0 ; i < message.length ; ++i){
+//            boolean[] biteArray = Bit.toBitArray(message[i]) ;
+//            for(int j = 0  ; j < 8 ; ++j){
+//                bitArr[i*8+j] = biteArray[j] ;
+//            }
+//        }
+//
+//        return embedBitArray(cover , bitArr) ;
+//
+//    }
+
     public static int[][] embedText(int[][] cover, byte[] message) {
         assert cover != null ;
         assert message != null ;
@@ -137,9 +162,16 @@ public class TextSteganography {
             assert elem.length == length ;
         }
         if(message.length == 0) return cover ;
-        boolean[] bitArray = Text.toBitArray(Text.toString(message)) ;
-        cover = embedBitArray(cover , bitArray) ;
+        boolean[] bitArr = new boolean[8*message.length] ;
+        for(int i = 0 ; i < message.length ; ++i){
+            boolean[] biteArray = Bit.toBitArray(message[i]) ;
+            for(int j = 0  ; j < 8 ; ++j){
+                bitArr[i*8+j] = biteArray[j] ;
+            }
+        }
+        cover = embedBitArray(cover , bitArr);
         return cover ;
+
     }
 
     /**
