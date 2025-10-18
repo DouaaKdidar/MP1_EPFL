@@ -302,7 +302,7 @@ public final class Main {
         //Decoding with key
         byte[] decryptedAsBytes = Decrypt.vigenere(result, key);
         String decryptedAsString = Text.toString(decryptedAsBytes);
-        //System.out.println("Decoded : " + decryptedAsString); // uncomment to debug
+        System.out.println("Decoded : " + decryptedAsString); // uncomment to debug
         return Arrays.equals(string, decryptedAsBytes);
     }
 
@@ -374,10 +374,18 @@ public final class Main {
     private static boolean testEmbedText() {
         final byte[] TEXT = Text.toBytes("$\\|");
         int[][] cover = new int[10][10]; // filled with 0
-        final int[][] EXPECTED_IMAGE = {{0, 0, 1, 0, 0, 1, 0, 0, 0, 1},
-                {0, 1, 1, 1, 0, 0, 0, 1, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }};
+        final int[][] EXPECTED_IMAGE = {
+            {0, 0, 1, 0, 0, 1, 0, 0, 0, 1},
+            {0, 1, 1, 1, 0, 0, 0, 1, 1, 1}, 
+            {1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
 
         int[][] hidden = TextSteganography.embedText(cover, TEXT);
         return Arrays.deepEquals(EXPECTED_IMAGE, hidden) && Arrays.deepEquals(cover, new int[10][10]);

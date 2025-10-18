@@ -49,6 +49,11 @@ public final class ImageSteganography {
      * @return ARGB image with the image embedded on the cover
      */
     public static int[][] embedGray(int[][] cover, int[][] grayImage, int threshold){
+        for (int[] row : grayImage) {
+            for (int value : row) {
+                assert value >= 0 && value <= 255 : "Invalid grayscale value: " + value;
+            }
+        }
         boolean[][] bandw = Image.toBinary(grayImage, threshold);
         return embedBW(cover, bandw);
     }
@@ -62,10 +67,13 @@ public final class ImageSteganography {
     public static int[][] embedBW(int[][] cover, boolean[][] load){
         assert cover != null;
         assert cover.length > 0;
+        assert cover[0] != null;
         assert cover[0].length > 0;
         assert load != null;
         assert load.length > 0;
         assert load[0].length > 0;
+        assert cover.length >= load.length;
+        assert cover[0].length >= load[0].length;
         // assert load.length < cover.length;
         // assert load[0].length < cover[0].length;
         int w = cover.length;
@@ -73,12 +81,12 @@ public final class ImageSteganography {
         int bw = load.length;
         int bh = load[0].length;
         int[][] hidden = new int[w][h];
-        int trues = 0;
+        // int trues = 0;
         for (int i = 0; i < w; ++i) {
             for (int j = 0; j < h; ++j) {
                 if (i < bw && j < bh) {
                     if (load[i][j]) {
-                        ++trues;
+                        // ++trues;
                     }
                     hidden[i][j] = Bit.embedInLSB(cover[i][j], load[i][j]);
                 } else {
@@ -102,7 +110,12 @@ public final class ImageSteganography {
     public static boolean[][] revealBW(int[][] image) {
         assert image != null;
         assert image.length > 0;
+        assert image[0] != null;
         assert image[0].length > 0;
+        int lenght = image[0].length;
+        for (int[]elem: image) {
+            assert lenght == elem.length;
+        }
         int w = image.length;
         int h = image[0].length;
         boolean[][] bandw = new boolean[w][h];

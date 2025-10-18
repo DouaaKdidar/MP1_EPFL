@@ -44,17 +44,18 @@ public class TextSteganography {
         int m = 0 ;
         int max = cover[0].length ;
         int MAX = cover.length ;
+        int[][] encripted = new int[MAX][max];
         for(int i = 0 ; i < message.length ; ++i ){
-            cover[n][m] =Bit.embedInLSB(cover[n][m] , message[i]) ;
+            encripted[n][m] = Bit.embedInLSB(cover[n][m] , message[i]) ;
             if(m == max-1){
-                if(n == MAX-1) return cover ;
+                if(n == MAX-1) return encripted ;
                 m = 0 ;
                 ++n ;
             }else{
                 ++m ;
             }
         }
-        return cover ;
+        return encripted ;
     }
 
     /**

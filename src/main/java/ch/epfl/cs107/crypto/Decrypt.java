@@ -58,6 +58,8 @@ public final class Decrypt {
     public static byte[] vigenere(byte[] cipher, byte[] keyword) {
         assert cipher != null ;
         assert keyword != null ;
+        assert cipher.length > 0;
+        assert keyword.length > 0;
 
         int n = cipher.length ;
         int k = keyword.length ;
@@ -65,7 +67,7 @@ public final class Decrypt {
         for(int i = 0; i < n; ++i){
             plainText[i] = (byte) (cipher[i] - keyword[i%k]);
         }
-        return cipher ;
+        return plainText ;
     }
 
     // ============================================================================================
@@ -81,6 +83,9 @@ public final class Decrypt {
     public static byte[] cbc(byte[] cipher, byte[] iv) {
         assert cipher != null ;
         assert iv != null ;
+        assert cipher.length > 0;
+        assert iv.length > 0;
+
         int k = iv.length ;
         byte[] plainText = new byte[cipher.length] ;
         for(int i =  0 ; i < cipher.length ; ++i){
@@ -101,6 +106,8 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] xor(byte[] cipher, byte key) {
+        assert cipher != null;
+        assert cipher.length > 0;
         byte[] plainText= new byte[cipher.length] ;
         for(int i = 0 ; i < cipher.length ; ++i){
             plainText[i] = (byte)(cipher[i]^key) ;
@@ -121,7 +128,7 @@ public final class Decrypt {
     public static byte[] oneTimePad(byte[] cipher, byte[] pad) {
         assert cipher != null ;
         assert pad != null ;
-        assert pad.length >= cipher.length ;
+        assert pad.length == cipher.length ;
         byte[] plainText = new byte[cipher.length] ;
         for(int i = 0 ; i < cipher.length ; ++i){
             plainText[i] = (byte) (cipher[i] ^ pad[i]) ;
