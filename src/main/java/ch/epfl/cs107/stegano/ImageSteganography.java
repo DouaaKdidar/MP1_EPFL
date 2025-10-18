@@ -71,6 +71,7 @@ public final class ImageSteganography {
         assert cover[0].length > 0;
         assert load != null;
         assert load.length > 0;
+        assert load[0] != null;
         assert load[0].length > 0;
         assert cover.length >= load.length;
         assert cover[0].length >= load[0].length;

@@ -58,7 +58,7 @@ public final class Decrypt {
     public static byte[] vigenere(byte[] cipher, byte[] keyword) {
         assert cipher != null ;
         assert keyword != null ;
-        assert cipher.length > 0;
+        // assert cipher.length > 0;
         assert keyword.length > 0;
 
         int n = cipher.length ;
@@ -83,7 +83,7 @@ public final class Decrypt {
     public static byte[] cbc(byte[] cipher, byte[] iv) {
         assert cipher != null ;
         assert iv != null ;
-        assert cipher.length > 0;
+        // assert cipher.length > 0;
         assert iv.length > 0;
 
         int k = iv.length ;
@@ -107,7 +107,7 @@ public final class Decrypt {
      */
     public static byte[] xor(byte[] cipher, byte key) {
         assert cipher != null;
-        assert cipher.length > 0;
+        // assert cipher.length > 0;
         byte[] plainText= new byte[cipher.length] ;
         for(int i = 0 ; i < cipher.length ; ++i){
             plainText[i] = (byte)(cipher[i]^key) ;
