@@ -40,11 +40,22 @@ public class TextSteganography {
     public static int[][] embedBitArray(int[][] cover, boolean[] message) {
         assert cover != null ;
         assert message != null ;
+        int length = cover[0].length ;
+        for(int[] elem : cover){
+            assert elem != null ;
+            assert elem.length == length ;
+        }
         int n = 0 ;
         int m = 0 ;
         int max = cover[0].length ;
         int MAX = cover.length ;
         int[][] encripted = new int[MAX][max];
+        for(int i = 0; i < MAX ; ++i){
+            for(int j = 0; j < max ; ++j){
+                encripted[i][j] = cover[i][j] ;
+            }
+        }
+
         for(int i = 0 ; i < message.length ; ++i ){
             encripted[n][m] = Bit.embedInLSB(cover[n][m] , message[i]) ;
             if(m == max-1){
@@ -65,8 +76,18 @@ public class TextSteganography {
      */
     public static boolean[] revealBitArray(int[][] image) {
         assert image != null ;
+        assert image[0] != null ;
+        assert image[0].length != 0 ;
+        int length = image[0].length ;
+        for(int[] elem : image){
+            assert elem.length == length ;
+        }
         int n = image.length ;
         int m = image[0].length ;
+        if(length == 0) {
+            boolean[] bitArray = new boolean[0];
+            return bitArray ;
+        }
         boolean bitArray[] = new boolean[n*m] ;
         for(int i = 0; i  < n ; ++i){
             for(int j = 0 ; j  < m ; ++j){
