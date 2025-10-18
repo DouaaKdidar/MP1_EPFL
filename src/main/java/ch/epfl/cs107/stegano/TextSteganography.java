@@ -5,6 +5,8 @@ import ch.epfl.cs107.crypto.Encrypt;
 import ch.epfl.cs107.utils.Bit;
 import ch.epfl.cs107.utils.Text;
 
+import java.sql.SQLOutput;
+
 import static ch.epfl.cs107.utils.Text.*;
 import static ch.epfl.cs107.utils.Image.*;
 import static ch.epfl.cs107.utils.Bit.*;
@@ -23,6 +25,19 @@ import static ch.epfl.cs107.Main.*;
  */
 public class TextSteganography {
 
+
+    public static void main(String[] args){
+        int[][] image ={
+                {1694089606, -1423994191},
+                {-404912417, 339861896}
+        };
+
+        byte[] message = {-55, -56} ;
+        byte[] text = revealText(image);
+        for(int i = 0 ; i < text.length ; ++i){
+            System.out.println(text[i]);
+        }
+    }
 
     // DO NOT CHANGE THIS, MORE ON THAT ON WEEK 7
     private TextSteganography(){}
@@ -78,11 +93,16 @@ public class TextSteganography {
         assert image != null ;
         assert image[0] != null ;
         int n = image.length ;
+        if(n ==0) {
+            boolean[] bitArray = new boolean[0];
+            return bitArray ;
+        }
         int m = image[0].length ;
         for(int[] elem : image){
+            assert elem != null ;
             assert elem.length == m  ;
         }
-        if(m==0 || n ==0) {
+        if(m ==0) {
             boolean[] bitArray = new boolean[0];
             return bitArray ;
         }
@@ -111,12 +131,12 @@ public class TextSteganography {
         assert cover != null ;
         assert message != null ;
         assert cover[0] != null ;
-        int length = cover[0].length ;
+        int length = cover[0].length;
         for(int[] elem : cover){
             assert elem != null ;
             assert elem.length == length ;
         }
-        if(message.length ==0) return cover ;
+        if(message.length == 0) return cover ;
         boolean[] bitArray = Text.toBitArray(Text.toString(message)) ;
         cover = embedBitArray(cover , bitArray) ;
         return cover ;
@@ -129,6 +149,7 @@ public class TextSteganography {
      */
     public static byte[] revealText(int[][] image) {
         assert image != null ;
+        assert image.length > 0 ;
         assert image[0]!= null ;
         assert image[0].length > 0 ;
         int length = image[0].length ;
@@ -137,8 +158,12 @@ public class TextSteganography {
             assert elem.length == length ;
         }
         boolean[] bitArray = revealBitArray(image) ;
-        String text = Text.toString(bitArray) ;
-        return Text.toBytes(text) ;
+
+        byte[] arr = new byte[bitArray.length / 8];
+        for(int i = 0 ; i < bitArray.length /8 ; ++i){
+            arr[i] = Bit.toByte(Text.sliceArray(bitArray, i * 8, (i+1)*8));
+        }
+        return arr ;
     }
 
 

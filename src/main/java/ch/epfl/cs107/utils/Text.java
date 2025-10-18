@@ -76,7 +76,7 @@ public final class Text {
      * @return <b>UTF-8 String</b> representation of the bit array
      */
 
-    private static boolean[] sliceArray(boolean[] arr , int start ,int end){
+    public  static boolean[] sliceArray(boolean[] arr , int start ,int end){
         boolean[] slice = new boolean[end-start] ;
         for(int i = start ; i < end ; ++i){
             slice[i-start] = arr[i] ;
