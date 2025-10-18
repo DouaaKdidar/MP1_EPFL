@@ -49,6 +49,7 @@ public final class ImageSteganography {
      * @return ARGB image with the image embedded on the cover
      */
     public static int[][] embedGray(int[][] cover, int[][] grayImage, int threshold){
+        assert grayImage != null;
         for (int[] row : grayImage) {
             for (int value : row) {
                 assert value >= 0 && value <= 255 : "Invalid grayscale value: " + value;
