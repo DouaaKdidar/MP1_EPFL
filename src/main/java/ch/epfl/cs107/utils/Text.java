@@ -48,7 +48,7 @@ public final class Text {
      */
     public static boolean[] toBitArray(String str){
         assert str != null ;
-        assert str.length() != 0 ;
+        // assert str.length() != 0 ;
 
         byte[] arr =  toBytes(str) ;
         boolean[] bitArr = new boolean[8*arr.length] ;
@@ -93,7 +93,9 @@ public final class Text {
 
     public static String toString(boolean[] bitArray) {
         assert bitArray != null ;
-        assert bitArray.length > 0;
+        if (bitArray.length == 0) {
+            return "";
+        }
         assert bitArray.length % 8 == 0 ;
 
         byte[] arr = new byte[bitArray.length / 8];
