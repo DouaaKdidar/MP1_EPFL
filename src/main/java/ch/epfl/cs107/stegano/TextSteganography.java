@@ -82,7 +82,7 @@ public class TextSteganography {
         for(int[] elem : image){
             assert elem.length == m  ;
         }
-        if(n == 0 && m==0) {
+        if(m==0 || n ==0) {
             boolean[] bitArray = new boolean[0];
             return bitArray ;
         }
@@ -116,6 +116,7 @@ public class TextSteganography {
             assert elem != null ;
             assert elem.length == length ;
         }
+        if(message.length ==0) return cover ;
         boolean[] bitArray = Text.toBitArray(Text.toString(message)) ;
         cover = embedBitArray(cover , bitArray) ;
         return cover ;
