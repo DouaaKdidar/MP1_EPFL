@@ -40,7 +40,7 @@ public final class Decrypt {
         byte[] plainText = new byte[cipher.length] ;
 
         for(int i = 0 ; i < cipher.length ; ++i){
-            plainText[i] = (byte)(plainText[i] - key) ;
+            plainText[i] = (byte)(cipher[i] - key) ;
         }
         return plainText ;
     }

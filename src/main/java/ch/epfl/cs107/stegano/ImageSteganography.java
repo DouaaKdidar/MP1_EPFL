@@ -37,7 +37,7 @@ public final class ImageSteganography {
      * @return ARGB image with the image embedded on the cover
      */
     public static int[][] embedARGB(int[][] cover, int[][] argbImage, int threshold){
-        boolean[][] bandw = Image.toBinary(argbImage, threshold);
+        boolean[][] bandw = Image.toBinary(Image.toGray(argbImage), threshold);
         return embedBW(cover, bandw);
     }
 
@@ -60,14 +60,14 @@ public final class ImageSteganography {
      * @return ARGB image with the image embedded on the cover
      */
     public static int[][] embedBW(int[][] cover, boolean[][] load){
-        assert cover == null;
+        assert cover != null;
         assert cover.length > 0;
         assert cover[0].length > 0;
-        assert load == null;
+        assert load != null;
         assert load.length > 0;
         assert load[0].length > 0;
-        assert load.length < cover.length;
-        assert load[0].length < cover[0].length;
+        // assert load.length < cover.length;
+        // assert load[0].length < cover[0].length;
         int w = cover.length;
         int h = cover[0].length;
         int bw = load.length;
@@ -86,7 +86,7 @@ public final class ImageSteganography {
                 }
             }
         }
-        System.out.println("Trues: " + trues);
+        // System.out.println("Trues: " + trues);
         return hidden;
     }
 
@@ -100,7 +100,7 @@ public final class ImageSteganography {
      * @return binary representation of the hidden image
      */
     public static boolean[][] revealBW(int[][] image) {
-        assert image == null;
+        assert image != null;
         assert image.length > 0;
         assert image[0].length > 0;
         int w = image.length;

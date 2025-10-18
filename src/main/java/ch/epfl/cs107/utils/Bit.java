@@ -36,7 +36,7 @@ public final class Bit {
      * @return embedded value
      */
     public static int embedInXthBit(int value, boolean m, int pos) {
-        assert pos > 32 || pos < 0;
+        assert pos >= 0 && pos <= 32;
         if (m) {
             value |= 1 << pos;
         } else {
@@ -69,7 +69,7 @@ public final class Bit {
      * @return <code>true</code> if the bit is '1' and <code>false</code> otherwise
      */
     public static boolean getXthBit(int value, int pos) {
-        assert pos > 32 || pos < 0;
+        assert pos >= 0 && pos <= 32;
         return ((value >> pos) & 1) == 1;
     }
 
@@ -128,8 +128,8 @@ public final class Bit {
      * @return the byte representation of the bit array
      */
     public static byte toByte(boolean[] bitArray){
-        assert bitArray == null;
-        assert bitArray.length != 8;
+        assert bitArray != null;
+        assert bitArray.length == 8;
         byte bt = 0;
         for (int i = 0; i < 8; ++i) {
             if (bitArray[7-i]) {

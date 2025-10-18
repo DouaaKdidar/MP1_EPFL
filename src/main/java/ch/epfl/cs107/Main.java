@@ -75,28 +75,49 @@ public final class Main {
         // ========== Test Cryptography Methods ==========
         String message = "La vie est un long fleuve tranquille :-)";
         String key = "2cF%5";
-        //testCrypto(message, key);
-        //message = Text.toString(Helper.read("text_one.txt"));
-        //testCrypto(message, key);
+        testCrypto(message, key);
+        message = Text.toString(Helper.read("text_one.txt"));
+        testCrypto(message, key);
         Helper.dialog("Tests ", "Cryptography passed");
         // ========== Test Steganography Methods ==========
         assert testEmbedBWImage();
-        //assert testEmbedText();
-                var image  = Helper.readImage("the-starry-night" + File.separator + "image.png");
-        var cover  = Helper.readImage("the-starry-night" + File.separator + "cover.png");
-        var hidden = Helper.readImage("the-starry-night" + File.separator + "hidden.png");
-        boolean[][] hidden_bw = Image.toBinary(image, IMAGE_THRESHOLD);
-        int[][] bw = Image.fromGray(Image.fromBinary(hidden_bw));
-        show(bw, "Hidden");
+        assert testEmbedText();
+        // var image  = Helper.readImage("the-starry-night" + File.separator + "image.png");
+        // var cover  = Helper.readImage("the-starry-night" + File.separator + "cover.png");
+        // var hidden = Helper.readImage("the-starry-night" + File.separator + "hidden.png");
+        // boolean[][] hidden_bw = Image.toBinary(image, IMAGE_THRESHOLD);
+        // int[][] bw = Image.fromGray(Image.fromBinary(hidden_bw));
+        // show(bw, "Hidden");
 
-        int[][] processed = ImageSteganography.embedARGB(cover, image, IMAGE_THRESHOLD);
-        show(processed, "Example");
-        boolean[][] raw = ImageSteganography.revealBW(processed);
+        // int[][] processed = ImageSteganography.embedARGB(cover, image, IMAGE_THRESHOLD);
+        // show(processed, "Example");
+        // boolean[][] raw = ImageSteganography.revealBW(processed);
 
-        int[][] bandw = Image.fromGray(Image.fromBinary(raw));
-        show(bandw, "Raw");
-        testImageSteganographyWithImages("the-starry-night");
-        //assert testRevealBitArray();
+        // int[][] bandw = Image.fromGray(Image.fromBinary(raw));
+        // show(bandw, "Raw");
+        // var hidden = Helper.readImage("the-starry-night" + File.separator + "hidden.png");
+        // boolean[][] raw = ImageSteganography.revealBW(hidden);
+        // var image  = Helper.readImage("the-starry-night" + File.separator + "image.png");
+        // var cover  = Helper.readImage("the-starry-night" + File.separator + "cover.png");
+        // var embedded = ImageSteganography.embedARGB(cover, image, IMAGE_THRESHOLD);
+        // boolean[][] found = ImageSteganography.revealBW(embedded);
+        // int[][] difference = new int[found.length][found[0].length];
+        // for (int i = 0; i < found.length; ++i) {
+        //     for (int j = 0; j < found[0].length; ++j) {
+        //         if (raw[i][j] != found[i][j]) {
+        //             if (raw[i][j]) {
+        //                 difference[i][j] = 0xFF_FF_00_00;
+        //             } else {
+        //                 difference[i][j] = 0xFF_00_FF_00;
+        //             }
+        //         } else {
+        //             difference[i][j] = 0xFF_FF_FF_FF;
+        //         }
+        //     }
+        // }
+        // show(difference, "Difference");
+        assert testImageSteganographyWithImages("the-starry-night");
+        assert testRevealBitArray();
         Helper.dialog("Tests ", "ImageSteganography passed");
     }
 
@@ -206,7 +227,7 @@ public final class Main {
         };
 
         int[][] computed = Image.toGray(image);
-        //System.out.println(Arrays.deepToString(computed)); // uncomment to debug
+        System.out.println(Arrays.deepToString(computed)); // uncomment to debug
         int[][] expected = {{159, 52}, {255, 0}};
         return Arrays.deepEquals(computed, expected);
     }
@@ -214,6 +235,7 @@ public final class Main {
     private static boolean testGrayImageToBinary() {
         int[][] grayImage = {{159, 52}, {255, 0}};
         boolean[][] computed = Image.toBinary(grayImage, 100);
+        System.out.println(Arrays.deepToString(computed)); // uncomment to debug
         boolean[][] expected = {{true, false}, {true, false}};
         return Arrays.deepEquals(computed, expected);
     }
@@ -221,6 +243,7 @@ public final class Main {
     private static boolean testImageFromGray() {
         int[][] grayImage = {{159, 52}, {255, 0}}; // {{0xf9, 0x34}, {0xff, 0x00}}
         int[][] computed = Image.fromGray(grayImage);
+        System.out.println(Arrays.deepToString(computed)); // uncomment to debug
         int[][] expected = {{0xff9f9f9f, 0xff343434}, {0xffffffff, 0xff000000}};
         return Arrays.deepEquals(computed, expected);
     }

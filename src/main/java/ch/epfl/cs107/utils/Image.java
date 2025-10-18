@@ -37,8 +37,7 @@ public final class Image {
      * @return packed value of the pixel
      */
     public static int argb(byte alpha, byte red, byte green, byte blue){
-
-        return alpha << 24 | red << 16 | green << 8 | blue ;
+        return alpha << 24 | (red & 0xFF)<<16 | (green & 0xFF) << 8 | (blue & 0xFF); 
     }
 
     /**
@@ -89,7 +88,7 @@ public final class Image {
      * @return gray scaling of the given pixel
      */
     public static int gray(int pixel){
-        return ((int)(red(pixel) & 255) + (int)(blue(pixel) & 255) + (int)(green(pixel) & 255)) / 3;
+        return ((red(pixel) & 255) + (blue(pixel) & 255) + (green(pixel) & 255)) / 3;
     }
 
     /**
@@ -114,7 +113,7 @@ public final class Image {
      * @return the gray scale version of the image
      */
     public static int[][] toGray(int[][] image){
-        assert image == null;
+        assert image != null;
         assert image.length > 0;
         assert image[0].length > 0;
         int w = image.length;
@@ -136,7 +135,7 @@ public final class Image {
      * @return binary representation of the image
      */
     public static boolean[][] toBinary(int[][] image, int threshold){
-        assert image == null;
+        assert image != null;
         assert image.length > 0;
         assert image[0].length > 0;
         int w = image.length;
@@ -144,7 +143,7 @@ public final class Image {
         boolean[][] boolIm = new boolean[w][h];
         for (int i = 0; i < w; ++i) {
             for (int j = 0; j < h; ++j) {
-                boolIm[i][j] = binary(gray(image[i][j]), threshold);
+                boolIm[i][j] = binary(image[i][j], threshold);
             }
         }
         return boolIm;
@@ -157,7 +156,7 @@ public final class Image {
      * @return <b>gray ARGB</b> representation
      */
     public static int[][] fromGray(int[][] image){
-        assert image == null;
+        assert image != null;
         assert image.length > 0;
         assert image[0].length > 0;
         int w = image.length;
@@ -165,7 +164,8 @@ public final class Image {
         int[][] colorIm = new int[w][h];
         for (int i = 0; i < w; ++i) {
             for (int j = 0; j < h; ++j) {
-                byte grayValue = (byte)image[i][j];
+                byte grayValue = blue(image[i][j]);
+                // System.out.println(grayValue);
                 colorIm[i][j] = argb((byte)255, grayValue, grayValue, grayValue);
             }
         }
@@ -180,24 +180,24 @@ public final class Image {
      * @return <b>black and white ARGB</b> representation
      */
     public static int[][] fromBinary(boolean[][] image){
-        assert image == null;
+        assert image != null;
         assert image.length > 0;
         assert image[0].length > 0;
         int w = image.length;
         int h = image[0].length;
         int[][] colorIm = new int[w][h];
-        int trues = 0;
+        // int trues = 0;
         for (int i = 0; i < w; ++i) {
             for (int j = 0; j < h; ++j) {
                 if (image[i][j]) {
-                    ++trues;
-                    colorIm[i][j] = 255;
+                    // ++trues;
+                    colorIm[i][j] = 0xFF_FF_FF_FF;
                 } else {
-                    colorIm[i][j] = 0;
+                    colorIm[i][j] = 0xFF_00_00_00;
                 }
             }
         }
-        System.out.println("Trues: " + trues);
+        // System.out.println("Trues: " + trues);
         return colorIm;
     }
 
