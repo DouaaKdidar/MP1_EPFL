@@ -192,8 +192,13 @@ public final class Image {
      */
     public static int[][] fromBinary(boolean[][] image){
         assert image != null;
-        assert image.length > 0;
-        assert image[0].length > 0;
+        assert image.length >= 0;
+        if (image.length == 0) {
+            int [][] res = new int[0][0];
+            return res;
+        }
+        assert image[0] != null;
+        
         int w = image.length;
         int h = image[0].length;
         int[][] colorIm = new int[w][h];
