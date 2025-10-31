@@ -2,10 +2,15 @@
 package ch.epfl.cs107;
 
 import ch.epfl.cs107.crypto.Decrypt;
+import ch.epfl.cs107.stegano.ImageSteganography;
 import ch.epfl.cs107.stegano.TextSteganography;
+import ch.epfl.cs107.utils.Bit;
+import ch.epfl.cs107.utils.Image;
 import ch.epfl.cs107.utils.Text;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.rmi.StubNotFoundException;
 import java.util.Arrays;
 
 /**
@@ -25,7 +30,7 @@ public class Challenge {
     // ============================================================================================
     public static void main(String[] args){
         challenge() ;
-        String s = "BKDMEPHEZL GV V V T E Z W X B A F D L N T O L V Q L R W D O N S G I J P W J C W S O T V X F U I D Y F S H B K Q D P F B H U C C M Q T D G O K R Y F E S N B T B I C P D B R W N Q R E S E Z I U" ;
+        // String s = "BKDMEPHEZL GV V V T E Z W X B A F D L N T O L V Q L R W D O N S G I J P W J C W S O T V X F U I D Y F S H B K Q D P F B H U C C M Q T D G O K R Y F E S N B T B I C P D B R W N Q R E S E Z I U" ;
     }
 
 
@@ -70,17 +75,46 @@ public class Challenge {
 //        String key =
 //    }
     public static String challenge(){
-        String frequencyOrder = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
-        byte[] key = Text.toBytes(frequencyOrder) ;
-        int[][] image1 = Helper.readImage("C:\\Users\\LEGION\\AppData\\Local\\Temp\\75ab30c0-82a8-4d60-8414-0a4adad2e2a4_crypto-stegano.zip.crypto-stegano.zip\\MP1-2025\\src\\main\\resources\\challenge\\image1.png")  ;
-
-
-        String message1 = Text.toString(TextSteganography.revealText(image1)) ;
-        String onlyEnUpp = message1.replaceAll("[^A-Z]", "");; ;
-        System.out.println(onlyEnUpp);
-        System.out.println(sortChars(onlyEnUpp));
 
 //
-        return message1 ;
+        return "Flag{F0r743w1Nn}" ;
     }
+
+    public static void vignere() { // IV: uV9L2k!dA4rT0
+        var image = Helper.readImage("challenge" + File.separator + "image1.png");
+        boolean[][] cipher = ImageSteganography.revealBW(image);
+        var data = Decrypt.vigenere(TextSteganography.revealText(Image.fromBinary(cipher)), Text.toBytes("c4Ptur37hEfL46"));
+        var iv = Arrays.copyOfRange(data, 120, 136);
+        System.out.println(Text.toString(iv));
+        // Helper.show(image2, "Test");
+    }
+
+    public static void cbc() {
+        var image = Helper.readImage("challenge" + File.separator + "image2.png");
+        boolean[][] cipher = ImageSteganography.revealBW(image);
+        var data = Decrypt.cbc(TextSteganography.revealText(Image.fromBinary(cipher)), Text.toBytes("uV9L2k!dA4rT0"));
+        var iv = Arrays.copyOfRange(data,0, 1000);
+        // var iv = Text.toString(data).matches("^[0-9]{8}$");
+        System.out.println(Text.toString(iv));
+    }
+    public static void caesar() { //
+        byte[] hint = Helper.read("C:\\Users\\ayfmp\\OneDrive\\Documentos\\EPFL\\ba1\\prog\\projets\\MP1_EPFL\\target\\classes\\challenge\\hint2.txt");
+        for (int i = 0; i < 256; ++i) {
+            System.out.println(Text.toString(Decrypt.caesar(hint, (byte)i)) + " " + (byte)i);
+        } 
+    }
+
+
+    public static void xor() {
+        byte[] hint = Helper.read("C:\\Users\\ayfmp\\OneDrive\\Documentos\\EPFL\\ba1\\prog\\projets\\MP1_EPFL\\target\\classes\\challenge\\hint3.txt");
+                for (int i = 0; i < 256; ++i) {
+            System.out.println();
+            System.out.println(Text.toString(Decrypt.xor(hint, (byte)-i)) + " " + (byte)-i);
+        } 
+
+    }
+
+
+
+// KEYWORD=c4Ptur37hEfL46; IV_POS=120..136
 }
