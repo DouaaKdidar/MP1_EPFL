@@ -29,6 +29,7 @@ public class Challenge {
     // ======================================== CHALLENGE =========================================
     // ============================================================================================
     public static void main(String[] args){
+        // cbc();
         challenge() ;
         // String s = "BKDMEPHEZL GV V V T E Z W X B A F D L N T O L V Q L R W D O N S G I J P W J C W S O T V X F U I D Y F S H B K Q D P F B H U C C M Q T D G O K R Y F E S N B T B I C P D B R W N Q R E S E Z I U" ;
     }
@@ -77,10 +78,10 @@ public class Challenge {
     public static String challenge(){
 
 //
-        return "Flag{F0r743w1Nn}" ;
+        return "FLAG{C5-IO7;F0r743w1Nn}" ;
     }
 
-    public static void vignere() { // IV: uV9L2k!dA4rT0
+    public static void vignere() { // IV:uV9L2k!dA4rT0N
         var image = Helper.readImage("challenge" + File.separator + "image1.png");
         boolean[][] cipher = ImageSteganography.revealBW(image);
         var data = Decrypt.vigenere(TextSteganography.revealText(Image.fromBinary(cipher)), Text.toBytes("c4Ptur37hEfL46"));
@@ -90,10 +91,15 @@ public class Challenge {
     }
 
     public static void cbc() {
+        var image1 = Helper.readImage("challenge" + File.separator + "image1.png");
+        boolean[][] cipher1 = ImageSteganography.revealBW(image1);
+        var data1 = Decrypt.vigenere(TextSteganography.revealText(Image.fromBinary(cipher1)), Text.toBytes("c4Ptur37hEfL46"));
+        var iv1 = Arrays.copyOfRange(data1, 123, 136);
+
         var image = Helper.readImage("challenge" + File.separator + "image2.png");
         boolean[][] cipher = ImageSteganography.revealBW(image);
-        var data = Decrypt.cbc(TextSteganography.revealText(Image.fromBinary(cipher)), Text.toBytes("uV9L2k!dA4rT0"));
-        var iv = Arrays.copyOfRange(data,0, 1000);
+        var data = Decrypt.cbc(TextSteganography.revealText(Image.fromBinary(cipher)), iv1);
+        var iv = Arrays.copyOfRange(data,0, 23);
         // var iv = Text.toString(data).matches("^[0-9]{8}$");
         System.out.println(Text.toString(iv));
     }
